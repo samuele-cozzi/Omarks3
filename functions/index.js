@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const authModule = require('./app/auth.index')
 
 admin.initializeApp(functions.config().firebase);
 
@@ -10,12 +11,4 @@ admin.initializeApp(functions.config().firebase);
 //  response.send("Hello from Firebase!");
 // });
 
-exports.addDefaultUserSettings = functions.auth.user().onCreate(event => {
-    const user = event.data; // The Firebase user.
-
-    const email = user.email; // The email of the user.
-    const displayName = user.displayName; // The display name of the user.
-    const uid = user.uid;
-
-    return admin.database().ref("/users/"+uid+"/info/status").set("ok");
-  });
+exports.addDefaultUserSettings =  functions.auth.user().onCreate(authModule.handler); 
