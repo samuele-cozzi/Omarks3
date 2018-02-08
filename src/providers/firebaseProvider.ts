@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
-import { AngularFireOfflineDatabase} from 'angularfire2-offline';
+import { AngularFireOfflineDatabase, AfoObjectObservable} from 'angularfire2-offline';
 
 @Injectable()
 export class FirebaseProvider {
   
   private uid_key: string = 'uid_key';
-  private user_key: string = 'user_key';
 
   private uid: string = '';
-  private user: any = null;
+  private user: AfoObjectObservable<any> = null;
 
   constructor(public storage: Storage, public db: AngularFireOfflineDatabase) {
   }
@@ -19,24 +18,27 @@ export class FirebaseProvider {
     this.uid = await this.storage.get(this.uid_key);
     return this.uid;
   }
-
-  async getUser(){
-    this.user = await this.storage.get(this.user_key);
-    return this.user;
-  }
   
   setUserId(user:any){
     this.storage.set(this.uid_key, user.uid);
-    this.storage.set(this.user_key, user);
   }
 
   logout(){
     this.storage.remove(this.uid_key);
-    this.storage.remove(this.user_key);
+    this.db.reset();
   }
 
-  getInfo() {
-    return this.db.object('/settings/' + this.uid + '/info');
+  async getSettings() {
+    if(this.uid == ''){
+      this.uid = await this.storage.get(this.uid_key);
+    }
+    this.user = this.db.object('/users/' + this.uid);
+    
+    return this.user;
+  }
+
+  saveSettings(model: any) {
+    this.user.set(model);
   }
 
   getTasks() {

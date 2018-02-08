@@ -6,8 +6,11 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+
 import { LoginPage } from '../pages/login/login';
 import { LoginPageModule } from '../pages/login/login.module';
+import { SettingPage } from '../pages/setting/setting';
+import { SettingPageModule } from '../pages/setting/setting.module';
 
 import { FirebaseProvider } from '../providers/firebaseProvider';
 
@@ -32,7 +35,7 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
   ],
   imports: [
     BrowserModule,
@@ -42,13 +45,15 @@ export const firebaseConfig = {
     AngularFireDatabaseModule,
     AngularFireOfflineModule,
     LoginPageModule,
+    SettingPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
     ListPage,
-    LoginPage
+    LoginPage,
+    SettingPage
   ],
   providers: [
     StatusBar,
