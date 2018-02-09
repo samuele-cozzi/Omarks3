@@ -3,10 +3,13 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FirebaseProvider } from '../providers/firebaseProvider';
+import {MenuSettings} from '../models/menuSettings';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
+
+
 
 @Component({
   templateUrl: 'app.html'
@@ -15,19 +18,11 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = HomePage;
-
-  pages: Array<{title: string, component: any}>;
+  pages: Array<MenuSettings>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public fb: FirebaseProvider) {
     this.initializeRootPage();
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
-    ];
-
   }
 
   initializeApp() {
@@ -36,6 +31,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.initializeMenuPages();
     });
   }
 
@@ -46,6 +42,12 @@ export class MyApp {
       } else {
         this.rootPage = HomePage;
       }
+  }
+
+  async initializeMenuPages(){
+    (await this.fb.getSettings()).subscribe(data => {
+      this.pages = data.menu;
+    });
   }
 
   openPage(page) {
