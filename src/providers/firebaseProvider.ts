@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-
 import { AngularFireOfflineDatabase, AfoObjectObservable} from 'angularfire2-offline';
+
+import {SettingsModel} from '../models/settingsModel';
 
 @Injectable()
 export class FirebaseProvider {
@@ -10,12 +11,18 @@ export class FirebaseProvider {
 
   private uid: string = '';
   private user: AfoObjectObservable<any> = null;
+  private settings: SettingsModel = new SettingsModel();
 
   constructor(public storage: Storage, public db: AngularFireOfflineDatabase) {
   }
 
-  async getUserId(){
+  async init() {
     this.uid = await this.storage.get(this.uid_key);
+    this.user = this.db.object('/users/' + this.uid);
+    return this.user;
+  }
+
+  getUserId(){
     return this.uid;
   }
   
@@ -28,21 +35,20 @@ export class FirebaseProvider {
     this.db.reset();
   }
 
-  async getSettings() {
-    if(this.uid == ''){
-      this.uid = await this.storage.get(this.uid_key);
-    }
-    this.user = this.db.object('/users/' + this.uid);
-    
-    return this.user;
+  getSettings() {
+    return this.settings;
+  }
+
+  setSettings( data ) {
+    this.settings = data;
   }
 
   saveSettings(model: any) {
-    this.user.set(model);
+    //this.user.set(model);
   }
 
-  getTasks() {
-    return this.db.list('/settings/' + this.uid + '/tasks');
-  }
+  // getTasks() {
+  //   return this.db.list('/settings/' + this.uid + '/tasks');
+  // }
 
 }
