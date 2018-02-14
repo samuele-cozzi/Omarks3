@@ -10,7 +10,7 @@ export class FirebaseProvider {
   private uid_key: string = 'uid_key';
 
   private uid: string = '';
-  private user: AfoObjectObservable<any> = null;
+  public user: AfoObjectObservable<any> = null;
   private settings: SettingsModel = new SettingsModel();
 
   constructor(public storage: Storage, public db: AngularFireOfflineDatabase) {
@@ -44,7 +44,10 @@ export class FirebaseProvider {
   }
 
   saveSettings(model: any) {
-    //this.user.set(model);
+    const promise = this.user.set(model.value);
+    //const promise = this.db.object('/users/' + this.uid).update(model.value);
+    //romise.offline.then(() => console.log('offline data saved to device storage!'));
+    promise.then(() => console.log('data saved to Firebase!'));
   }
 
   // getTasks() {

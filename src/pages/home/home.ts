@@ -1,10 +1,11 @@
 import { Component, ViewChild, HostListener } from '@angular/core';
 import { IonicPage, NavController, Searchbar, ToastController, NavParams } from 'ionic-angular';
 
-import { SettingsModel } from '../../models/settingsModel';
+//import { SettingsModel } from '../../models/settingsModel';
 import { Marks } from '../../models/marks';
 import { EditItemPage } from '../edit_item/edit_item';
 import { FirebaseProvider } from '../../providers/firebaseProvider';
+import { AfoObjectObservable} from 'angularfire2-offline';
 import { AlgoliaService } from '../../providers/algolia';
 
 
@@ -39,14 +40,13 @@ export class HomePage {
   private query: string = "";
   private key: string = "";
   private value: string = "";
-  private user: SettingsModel = new SettingsModel();
+  private user: AfoObjectObservable<any> = null;
 
   private searchFacets: any[] = [];
   private searchItems: any[] = [];
 
   /* IONIC Lifecycle app */
   constructor(public navCtrl: NavController,
-    private navParams: NavParams,
     private toastCtrl: ToastController,
     private settings: FirebaseProvider,
     private algoliaService: AlgoliaService
@@ -202,29 +202,22 @@ export class HomePage {
 
   /* Save Data */
   async initDashboard() {
-    if (this.user.dashboard.length == 0) {
-      var items = await this.algoliaService.get_dashboard();
-      items.sort(function(a,b) {return (a.dashboard_ranking > b.dashboard_ranking) ? 1 : ((b.dashboard_ranking > a.dashboard_ranking) ? -1 : 0);} );
-      for (var i = 0; i < items.length; i++) {
-        delete items[i]['facets.tag'];
-        items[i].dashboard_ranking = i;
-        this.algoliaService.save_item(items[i]);
-      }
-      this.user.dashboard = items;
-      this.settings.saveSettings(this.user);
-    }
+    this.user = this.settings.user;
   }
 
   async up(item) {
     try {
-      var i = this.user.dashboard.findIndex(x => x.dashboard_ranking == item.dashboard_ranking);
-      var j = this.user.dashboard.findIndex(x => x.dashboard_ranking == item.dashboard_ranking - 1);
-      this.user.dashboard[j].dashboard_ranking = item.dashboard_ranking;
-      this.user.dashboard[i].dashboard_ranking = item.dashboard_ranking - 1;
-      await this.algoliaService.save_item(this.user.dashboard[i]);
-      await this.algoliaService.save_item(this.user.dashboard[j]);
-      this.settings.saveSettings(this.user);
-      this.toastSavedDashboard();
+      console.log(item.dashboard_ranking);
+      if (item.dashboard_ranking > 0){
+        let rnkA = item.dashboard_ranking - 1;
+        let rnkB = item.dashboard_ranking;
+        this.user.value.dashboard[rnkA].dashboard_ranking = rnkB;
+        this.user.value.dashboard[rnkB].dashboard_ranking = rnkA;
+        var tmp = this.user.value.dashboard[rnkA];
+        this.user.value.dashboard[rnkA] = this.user.value.dashboard[rnkB];
+        this.user.value.dashboard[rnkB] = tmp;
+        this.settings.saveSettings(this.user);
+      }
     } catch (err) {
       this.toastError(err);
     }
@@ -232,51 +225,53 @@ export class HomePage {
 
   async down(item) {
     try {
-      var i = this.user.dashboard.findIndex(x => x.dashboard_ranking == item.dashboard_ranking);
-      var j = this.user.dashboard.findIndex(x => x.dashboard_ranking == item.dashboard_ranking + 1);
-      this.user.dashboard[j].dashboard_ranking = item.dashboard_ranking;
-      this.user.dashboard[i].dashboard_ranking = item.dashboard_ranking + 1;
-      await this.algoliaService.save_item(this.user.dashboard[i]);
-      await this.algoliaService.save_item(this.user.dashboard[j]);
-      this.settings.saveSettings(this.user);
-      this.toastSavedDashboard();
+      if (item.dashboard_ranking < this.user.value.dashboard.length){
+        let rnkA = item.dashboard_ranking;
+        let rnkB = item.dashboard_ranking + 1;
+        this.user.value.dashboard[rnkA].dashboard_ranking = rnkB;
+        this.user.value.dashboard[rnkB].dashboard_ranking = rnkA;
+        var tmp = this.user.value.dashboard[rnkA];
+        this.user.value.dashboard[rnkA] = this.user.value.dashboard[rnkB];
+        this.user.value.dashboard[rnkB] = tmp;
+        this.settings.saveSettings(this.user);
+      }
     } catch (err) {
       this.toastError(err);
     }
   }
 
   add_star(item) {
-    var i = this.user.dashboard.indexOf(item);
-    if (i > -1) {
-      this.user.dashboard[i].favorite = 1;
-      this.settings.saveSettings(this.user);
-    }
-    item.favorite = 1;
-    this.algoliaService.save_item(item)
-      .then(x => this.toastSavedDashboard())
-      .catch(err => this.toastError(err));
+    // var i = this.user.dashboard.indexOf(item);
+    // if (i > -1) {
+    //   this.user.dashboard[i].favorite = 1;
+    //   this.settings.saveSettings(this.user);
+    // }
+    // item.favorite = 1;
+    // this.algoliaService.save_item(item)
+    //   .then(x => this.toastSavedDashboard())
+    //   .catch(err => this.toastError(err));
   }
 
   remove_star(item) {
-    var i = this.user.dashboard.indexOf(item);
-    if (i > -1) {
-      this.user.dashboard[i].favorite = 0;
-      this.settings.saveSettings(this.user);
-    }
-    item.favorite = 0;
-    this.algoliaService.save_item(item)
-      .then(x => this.toastSavedDashboard())
-      .catch(err => this.toastError(err));
+    // var i = this.user.dashboard.indexOf(item);
+    // if (i > -1) {
+    //   this.user.dashboard[i].favorite = 0;
+    //   this.settings.saveSettings(this.user);
+    // }
+    // item.favorite = 0;
+    // this.algoliaService.save_item(item)
+    //   .then(x => this.toastSavedDashboard())
+    //   .catch(err => this.toastError(err));
   }
 
   delete(item) {
-    var i = this.user.dashboard.indexOf(item);
-    if (i > -1) {
-      this.user.dashboard.splice(i, 1);
-      this.settings.saveSettings(this.user);
-    }
-    this.algoliaService.delete_item(item)
-      .then(x => this.toastSavedDashboard())
-      .catch(err => this.toastError(err));
+    // var i = this.user.dashboard.indexOf(item);
+    // if (i > -1) {
+    //   this.user.dashboard.splice(i, 1);
+    //   this.settings.saveSettings(this.user);
+    // }
+    // this.algoliaService.delete_item(item)
+    //   .then(x => this.toastSavedDashboard())
+    //   .catch(err => this.toastError(err));
   }
 }

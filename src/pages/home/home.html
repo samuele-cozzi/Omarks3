@@ -21,7 +21,7 @@
 <ion-content padding >
   <div class="content" *ngIf="!showSearch">
     <ul>
-      <li *ngFor="let item of user.dashboard | dashboardPipe:['1','dashboard_ranking']">
+      <li *ngFor="let item of (user | async)?.dashboard">
         <ion-card>
           <div (click)="open(item, $event)">
             <ion-item>
@@ -32,7 +32,7 @@
                     <img *ngSwitchCase="'spreadsheets'" src="/build/images/sheets.png"/>
                     <img *ngSwitchCase="'presentation'" src="/build/images/slides.png"/>
                     <img *ngSwitchCase="'drawings'" src="/build/images/draw.png"/>
-                    <img *ngSwitchDefault  src="https://icons.better-idea.org/icon?url={{item.given_url.split('/')[2]}}&size=120"  />
+                    <img *ngSwitchDefault  src="https://besticon-demo.herokuapp.com/icon?size=80..120..200&url={{item.given_url.split('/')[2]}}&size=120"  />
                   </span>
               </ion-avatar>
               <h2>{{item.given_title}}</h2>
