@@ -1,5 +1,5 @@
 import { Component, ViewChild, HostListener } from '@angular/core';
-import { IonicPage, NavController, Searchbar, ToastController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, Searchbar, ToastController } from 'ionic-angular';
 
 //import { SettingsModel } from '../../models/settingsModel';
 import { Marks } from '../../models/marks';

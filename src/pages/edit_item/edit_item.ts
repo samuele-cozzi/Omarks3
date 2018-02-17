@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, NavParams, ToastController} from 'ionic-angular';
+import {NavParams, ToastController} from 'ionic-angular';
 
 import {AlgoliaService} from '../../providers/algolia';
-import {HomePage} from '../home/home';
-import {CodeItemPage} from '../code_item/code_item';
 
 import { SettingsModel } from '../../models/settingsModel';
 import { FirebaseProvider } from '../../providers/firebaseProvider';
@@ -18,8 +16,7 @@ export class EditItemPage implements OnInit{
 
   private user: SettingsModel = new SettingsModel();
 
-  constructor(private navCtrl: NavController
-    , private navParams: NavParams
+  constructor(private navParams: NavParams
     , private toastCtrl: ToastController
     , private searchServices: AlgoliaService
     , private settingsProvider: FirebaseProvider
@@ -85,12 +82,6 @@ export class EditItemPage implements OnInit{
           });
           toast.present();
         });
-  }
-
-  code(){
-    this.navCtrl.push(CodeItemPage, {
-      item: JSON.stringify(this.item, null, 2)
-    });
   }
 
   delete(){

@@ -12,6 +12,8 @@ import { LoginPage } from '../pages/login/login';
 import { LoginPageModule } from '../pages/login/login.module';
 import { SettingPage } from '../pages/setting/setting';
 import { SettingPageModule } from '../pages/setting/setting.module';
+import { EditItemPage } from '../pages/edit_item/edit_item';
+import { EditItemPageModule } from '../pages/edit_item/edit_item.module';
 
 import { FirebaseProvider } from '../providers/firebaseProvider';
 import { AlgoliaService } from '../providers/algolia';
@@ -47,14 +49,17 @@ export const firebaseConfig = {
     AngularFireOfflineModule,
     HomePageModule,
     LoginPageModule,
-    SettingPageModule
+    SettingPageModule,
+    EditItemPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
     LoginPage,
-    SettingPage
+    SettingPage,
+    EditItemPage
+
   ],
   providers: [
     StatusBar,
