@@ -205,7 +205,7 @@ export class HomePage {
     this.user = this.settings.user;
   }
 
-  async up(item) {
+  dashboard_up(item) {
     try {
       console.log(item.dashboard_ranking);
       if (item.dashboard_ranking > 0){
@@ -223,7 +223,7 @@ export class HomePage {
     }
   }
 
-  async down(item) {
+  dashboard_down(item) {
     try {
       if (item.dashboard_ranking < this.user.value.dashboard.length){
         let rnkA = item.dashboard_ranking;
@@ -240,28 +240,13 @@ export class HomePage {
     }
   }
 
-  add_star(item) {
-    // var i = this.user.dashboard.indexOf(item);
-    // if (i > -1) {
-    //   this.user.dashboard[i].favorite = 1;
-    //   this.settings.saveSettings(this.user);
-    // }
-    // item.favorite = 1;
-    // this.algoliaService.save_item(item)
-    //   .then(x => this.toastSavedDashboard())
-    //   .catch(err => this.toastError(err));
+  dashboard_edit (item) {
+    
   }
 
-  remove_star(item) {
-    // var i = this.user.dashboard.indexOf(item);
-    // if (i > -1) {
-    //   this.user.dashboard[i].favorite = 0;
-    //   this.settings.saveSettings(this.user);
-    // }
-    // item.favorite = 0;
-    // this.algoliaService.save_item(item)
-    //   .then(x => this.toastSavedDashboard())
-    //   .catch(err => this.toastError(err));
+  dashboard_delete(item) {
+    let id = this.user.value.dashboard.indexOf(item)
+    this.settings.deleteDashboardItem(id);
   }
 
   delete(item) {

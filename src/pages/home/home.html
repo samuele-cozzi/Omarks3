@@ -4,9 +4,9 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-buttons end *ngIf="!showSearch">
-      <button ion-button (click)="toogleSearchBar()"> 
-          <ion-icon icon-right name="search" ></ion-icon>
-        </button>
+      <button ion-button (click)="toogleSearchBar()">
+        <ion-icon icon-right name="search"></ion-icon>
+      </button>
     </ion-buttons>
     <ion-title *ngIf="!showSearch">OMarks</ion-title>
     <ion-searchbar #searchBar *ngIf="showSearch" (ionInput)="onInputSearch($event)" (ionClear)="onClearSearch($event)" (ionCancel)="onCancelSearch($event)"
@@ -18,22 +18,23 @@
   <ion-icon name="add"></ion-icon>
 </button>
 
-<ion-content padding >
+<ion-content padding>
   <div class="content" *ngIf="!showSearch">
     <ul>
       <li *ngFor="let item of (user | async)?.dashboard">
-        <ion-card>
+        <ion-card *ngIf="item">
           <div (click)="open(item, $event)">
             <ion-item>
               <ion-avatar item-left>
                 <span [ngSwitch]="item.given_url.split('/')[3]">
-                    <img *ngSwitchCase="'drive'" src="/build/images/drive.png"/>
-                    <img *ngSwitchCase="'document'" src="/build/images/doc.png"/>
-                    <img *ngSwitchCase="'spreadsheets'" src="/build/images/sheets.png"/>
-                    <img *ngSwitchCase="'presentation'" src="/build/images/slides.png"/>
-                    <img *ngSwitchCase="'drawings'" src="/build/images/draw.png"/>
-                    <img *ngSwitchDefault  src="https://besticon-demo.herokuapp.com/icon?size=80..120..200&url={{item.given_url.split('/')[2]}}&size=120"  />
-                  </span>
+                  <img *ngSwitchCase="'drive'" src="/build/images/drive.png" />
+                  <img *ngSwitchCase="'document'" src="/build/images/doc.png" />
+                  <img *ngSwitchCase="'spreadsheets'" src="/build/images/sheets.png" />
+                  <img *ngSwitchCase="'presentation'" src="/build/images/slides.png" />
+                  <img *ngSwitchCase="'drawings'" src="/build/images/draw.png" />
+                  <img *ngSwitchDefault src="https://besticon-demo.herokuapp.com/icon?size=80..120..200&url={{item.given_url.split('/')[2]}}&size=120"
+                  />
+                </span>
               </ion-avatar>
               <h2>{{item.given_title}}</h2>
               <p>{{item.given_url.split("/")[2]}}</p>
@@ -46,18 +47,19 @@
             </section>
           </div>
           <ion-item>
-            <button ion-button primary clear item-right (click)="up(item)">
-                    <ion-icon name="arrow-dropup-circle" ></ion-icon>
-                  </button>
-            <button ion-button primary clear item-right (click)="down(item)">
-                    <ion-icon name="arrow-dropdown-circle" ></ion-icon>
-                  </button>
-            <button ion-button primary clear item-right (click)="remove_star(item)">
-                    <ion-icon name="md-star" ></ion-icon>
-                  </button>
-            <button ion-button primary clear item-right (click)="edit(item)">
-                    <ion-icon name="create"></ion-icon>
-                  </button>
+            <button ion-button primary clear item-right (click)="dashboard_up(item)">
+              <ion-icon name="arrow-dropup-circle"></ion-icon>
+            </button>
+            <button ion-button primary clear item-right (click)="dashboard_down(item)">
+              <ion-icon name="arrow-dropdown-circle"></ion-icon>
+            </button>
+
+            <button ion-button primary clear item-right (click)="dashboard_edit(item)">
+              <ion-icon name="create"></ion-icon>
+            </button>
+            <button ion-button primary clear item-right (click)="dashboard_delete(item)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
           </ion-item>
 
         </ion-card>
@@ -78,14 +80,14 @@
       <ion-item (click)="open(item, $event)">
         <ion-thumbnail item-left>
           <span *ngIf="item.has_image == 0">
-              <span [ngSwitch]="item.given_url.split('/')[3]">
-                <img *ngSwitchCase="'drive'" src="/build/images/drive.png"/>
-                <img *ngSwitchCase="'document'" src="/build/images/doc.png"/>
-                <img *ngSwitchCase="'spreadsheets'" src="/build/images/sheets.png"/>
-                <img *ngSwitchCase="'presentation'" src="/build/images/slides.png"/>
-                <img *ngSwitchCase="'drawings'" src="/build/images/draw.png"/>
-                <img *ngSwitchDefault  src="https://icons.better-idea.org/icon?url={{item.given_url.split('/')[2]}}&size=120" />
-              </span>
+            <span [ngSwitch]="item.given_url.split('/')[3]">
+              <img *ngSwitchCase="'drive'" src="/build/images/drive.png" />
+              <img *ngSwitchCase="'document'" src="/build/images/doc.png" />
+              <img *ngSwitchCase="'spreadsheets'" src="/build/images/sheets.png" />
+              <img *ngSwitchCase="'presentation'" src="/build/images/slides.png" />
+              <img *ngSwitchCase="'drawings'" src="/build/images/draw.png" />
+              <img *ngSwitchDefault src="https://icons.better-idea.org/icon?url={{item.given_url.split('/')[2]}}&size=120" />
+            </span>
           </span>
           <img *ngIf="item.has_image == 1" src="{{item.image.src}}" />
         </ion-thumbnail>
@@ -98,17 +100,17 @@
       </ion-item>
       <ion-item-options>
         <button ion-button primary *ngIf="item.favorite == 1" (click)="remove_star(item)">
-            <ion-icon name="md-star"></ion-icon>
-          </button>
-        <button  ion-button primary *ngIf="item.favorite != 1" (click)="add_star(item)">
-            <ion-icon name="star-outline"></ion-icon>
-          </button>
+          <ion-icon name="md-star"></ion-icon>
+        </button>
+        <button ion-button primary *ngIf="item.favorite != 1" (click)="add_star(item)">
+          <ion-icon name="star-outline"></ion-icon>
+        </button>
         <button ion-button color="secondary" (click)="edit(item)">
-            <ion-icon name="create"></ion-icon>
-          </button>
+          <ion-icon name="create"></ion-icon>
+        </button>
         <button ion-button color="danger" (click)="delete(item)">
-            <ion-icon name="trash"></ion-icon>
-          </button>
+          <ion-icon name="trash"></ion-icon>
+        </button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
