@@ -21,42 +21,44 @@
 <ion-content padding>
   <div class="content" *ngIf="!showSearch">
     <ul>
-      <li *ngFor="let item of (user | async)?.dashboard">
+      <li *ngFor="let item of (user | async)?.dashboard | dashboardPipe">
         <ion-card *ngIf="item">
-          <div (click)="open(item, $event)">
+          <div (click)="open(item?.value, $event)">
             <ion-item>
               <ion-avatar item-left>
-                <span [ngSwitch]="item.given_url.split('/')[3]">
+                <span [ngSwitch]="item?.value?.given_url?.split('/')[3]">
                   <img *ngSwitchCase="'drive'" src="/build/images/drive.png" />
                   <img *ngSwitchCase="'document'" src="/build/images/doc.png" />
                   <img *ngSwitchCase="'spreadsheets'" src="/build/images/sheets.png" />
                   <img *ngSwitchCase="'presentation'" src="/build/images/slides.png" />
                   <img *ngSwitchCase="'drawings'" src="/build/images/draw.png" />
-                  <img *ngSwitchDefault src="https://besticon-demo.herokuapp.com/icon?size=80..120..200&url={{item.given_url.split('/')[2]}}&size=120"
+                  <img *ngSwitchDefault src="https://besticon-demo.herokuapp.com/icon?size=80..120..200&url={{item?.value?.given_url?.split('/')[2]}}&size=120"
                   />
                 </span>
               </ion-avatar>
-              <h2>{{item.given_title}}</h2>
-              <p>{{item.given_url.split("/")[2]}}</p>
+              <h2>{{item?.value?.given_title}}</h2>
+              <p>{{item?.value?.given_url?.split("/")[2]}}</p>
             </ion-item>
 
-            <section *ngIf="item.image_src && item.image_src.length > 0">
-              <img src="{{item.image_src}}" />
+            <section *ngIf="item?.value?.image_src && item?.value?.image_src.length > 0">
+              <img src="{{item?.value?.image_src}}" />
             </section>
-            <ion-card-content *ngIf="!item.image_src || (item.image_src && item.image_src.length == 0)">{{item.excerpt}}</ion-card-content>
+            <ion-card-content *ngIf="!item?.value?.image_src || (item?.value?.image_src && item?.value?.image_src.length == 0)">
+              {{item?.value?.excerpt}}
+            </ion-card-content>
           </div>
           <ion-item>
-            <button ion-button primary clear item-right (click)="dashboard_up(item)">
+            <button ion-button primary clear item-right (click)="dashboard_up(item.value)">
               <ion-icon name="arrow-dropup-circle"></ion-icon>
             </button>
-            <button ion-button primary clear item-right (click)="dashboard_down(item)">
+            <button ion-button primary clear item-right (click)="dashboard_down(item.value)">
               <ion-icon name="arrow-dropdown-circle"></ion-icon>
             </button>
 
-            <button ion-button primary clear item-right (click)="dashboard_edit(item)">
+            <button ion-button primary clear item-right (click)="dashboard_edit(item.value)">
               <ion-icon name="create"></ion-icon>
             </button>
-            <button ion-button primary clear item-right (click)="dashboard_delete(item)">
+            <button ion-button primary clear item-right (click)="dashboard_delete(item.value)">
               <ion-icon name="trash"></ion-icon>
             </button>
           </ion-item>

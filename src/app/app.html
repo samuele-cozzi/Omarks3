@@ -13,6 +13,9 @@
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
       </button>
+      <button menuClose ion-item (click)="openPage({ title: 'EditItemDashboard', component: 'EditItemDashboard'})">
+        Add Dashboard Card
+      </button>
       <button menuClose ion-item (click)="openPage({ title: 'Settings', component: 'Settings'})">
         Settings
       </button>

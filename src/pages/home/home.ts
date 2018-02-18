@@ -243,14 +243,13 @@ export class HomePage {
 
   dashboard_edit (item) {
     this.navCtrl.push(EditItemDashboardPage, {
-      item: JSON.stringify(item, null, 2),
-      id: this.user.value.dashboard.indexOf(item)
+      value: JSON.stringify(item, null, 2),
+      key: item._key
     });
   }
 
   dashboard_delete(item) {
-    let id = this.user.value.dashboard.indexOf(item);
-    this.settings.deleteDashboardItem(id)
+    this.settings.deleteDashboardItem(item._key)
       .then(x => this.toastSavedDashboard())
       .catch(err => this.toastError(err));
   }

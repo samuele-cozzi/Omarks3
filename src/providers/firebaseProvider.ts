@@ -49,6 +49,11 @@ export class FirebaseProvider {
     //romise.offline.then(() => console.log('offline data saved to device storage!'));
     promise.then(() => console.log('data saved to Firebase!'));
   }
+  
+  addDashboardItem(model:any){
+    const promise = this.db.list('/users/' + this.uid + '/dashboard').push(model);
+    return promise;
+  }
 
   editDashboardItem(id: number , model:any){
     const promise = this.db.object('/users/' + this.uid + '/dashboard/' + id).set(model);

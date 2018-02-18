@@ -1,15 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {NavParams, ToastController} from 'ionic-angular';
-import { AfoObjectObservable} from 'angularfire2-offline';
+import { Component, OnInit } from '@angular/core';
+import { NavParams, ToastController, IonicPage } from 'ionic-angular';
+import { AfoObjectObservable } from 'angularfire2-offline';
 
 import { FirebaseProvider } from '../../providers/firebaseProvider';
 
+@IonicPage({
+  name: "EditItemDashboard"
+})
 @Component({
   selector: 'page-edit-item-dashboard',
   templateUrl: 'edit_item_dashboard.html'
 })
-export class EditItemDashboardPage implements OnInit{
-  item: any; 
+export class EditItemDashboardPage implements OnInit {
+  item: any;
   message: string = "";
   id: number = 0;
 
@@ -20,14 +23,18 @@ export class EditItemDashboardPage implements OnInit{
     , private settings: FirebaseProvider
   ) {
 
-      
-    }
+
+  }
 
   async ngOnInit() {
-    this.item = JSON.parse(this.navParams.get('item'));
     this.user = this.settings.user;
-    this.id = this.navParams.get('id');
-    console.log(this.id);
+    this.id = this.navParams.get('key');
+    if (this.id == null) {
+      this.item = new Object();
+    } else {
+      this.item = JSON.parse(this.navParams.get('value'));
+      console.log(this.id);
+    }
   }
 
   /* Toast functions */
@@ -49,13 +56,19 @@ export class EditItemDashboardPage implements OnInit{
     toast.present();
   }
 
-  save(){
-    this.settings.editDashboardItem(this.id, this.item)
-      .then(x => this.toastSavedDashboard())
-      .catch(err => this.toastError(err));
+  save() {
+    if (this.id == null) {
+      this.settings.addDashboardItem(this.item)
+        .then(x => this.toastSavedDashboard())
+        .catch(err => this.toastError(err));
+    } else {
+      this.settings.editDashboardItem(this.id, this.item)
+        .then(x => this.toastSavedDashboard())
+        .catch(err => this.toastError(err));
+    }
   }
 
-  delete(){
+  delete() {
     this.settings.deleteDashboardItem(this.id)
       .then(x => this.toastSavedDashboard())
       .catch(err => this.toastError(err));
