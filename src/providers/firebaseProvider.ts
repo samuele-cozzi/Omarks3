@@ -50,12 +50,14 @@ export class FirebaseProvider {
     promise.then(() => console.log('data saved to Firebase!'));
   }
 
-  editDashboardItem(model:any){
-
+  editDashboardItem(id: number , model:any){
+    const promise = this.db.object('/users/' + this.uid + '/dashboard/' + id).set(model);
+    return promise;
   }
 
-  deleteDashboardItem(id){
-    this.db.object('/users/' + this.uid + '/dashboard/' + id).remove();
+  deleteDashboardItem(id: number){
+    const promise = this.db.object('/users/' + this.uid + '/dashboard/' + id).remove();
+    return promise;
   }
 
   // getTasks() {

@@ -40,11 +40,10 @@
               <p>{{item.given_url.split("/")[2]}}</p>
             </ion-item>
 
-            <ion-card-content *ngIf="item && item.has_image == 0">{{item.excerpt}}</ion-card-content>
-            <ion-card-content *ngIf="!item">{{item.excerpt}}</ion-card-content>
-            <section *ngIf="item && item.has_image == 1">
-              <!--<img src="{{item.image.src}}" />-->
+            <section *ngIf="item.image_src && item.image_src.length > 0">
+              <img src="{{item.image_src}}" />
             </section>
+            <ion-card-content *ngIf="!item.image_src || (item.image_src && item.image_src.length == 0)">{{item.excerpt}}</ion-card-content>
           </div>
           <ion-item>
             <button ion-button primary clear item-right (click)="dashboard_up(item)">

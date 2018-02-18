@@ -4,6 +4,7 @@ import { IonicPage, NavController, Searchbar, ToastController } from 'ionic-angu
 //import { SettingsModel } from '../../models/settingsModel';
 import { Marks } from '../../models/marks';
 import { EditItemPage } from '../edit_item/edit_item';
+import { EditItemDashboardPage } from '../edit_item_dashboard/edit_item_dashboard';
 import { FirebaseProvider } from '../../providers/firebaseProvider';
 import { AfoObjectObservable} from 'angularfire2-offline';
 import { AlgoliaService } from '../../providers/algolia';
@@ -241,12 +242,17 @@ export class HomePage {
   }
 
   dashboard_edit (item) {
-    
+    this.navCtrl.push(EditItemDashboardPage, {
+      item: JSON.stringify(item, null, 2),
+      id: this.user.value.dashboard.indexOf(item)
+    });
   }
 
   dashboard_delete(item) {
-    let id = this.user.value.dashboard.indexOf(item)
-    this.settings.deleteDashboardItem(id);
+    let id = this.user.value.dashboard.indexOf(item);
+    this.settings.deleteDashboardItem(id)
+      .then(x => this.toastSavedDashboard())
+      .catch(err => this.toastError(err));
   }
 
   delete(item) {

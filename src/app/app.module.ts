@@ -14,6 +14,8 @@ import { SettingPage } from '../pages/setting/setting';
 import { SettingPageModule } from '../pages/setting/setting.module';
 import { EditItemPage } from '../pages/edit_item/edit_item';
 import { EditItemPageModule } from '../pages/edit_item/edit_item.module';
+import { EditItemDashboardPage } from '../pages/edit_item_dashboard/edit_item_dashboard';
+import { EditItemDashboardPageModule } from '../pages/edit_item_dashboard/edit_item_dashboard.module';
 
 import { FirebaseProvider } from '../providers/firebaseProvider';
 import { AlgoliaService } from '../providers/algolia';
@@ -50,7 +52,8 @@ export const firebaseConfig = {
     HomePageModule,
     LoginPageModule,
     SettingPageModule,
-    EditItemPageModule
+    EditItemPageModule,
+    EditItemDashboardPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -58,7 +61,8 @@ export const firebaseConfig = {
     HomePage,
     LoginPage,
     SettingPage,
-    EditItemPage
+    EditItemPage,
+    EditItemDashboardPage
 
   ],
   providers: [
