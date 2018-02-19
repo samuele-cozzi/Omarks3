@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { AngularFireOfflineDatabase, AfoObjectObservable} from 'angularfire2-offline';
+import { AngularFireOfflineDatabase, AfoObjectObservable } from 'angularfire2-offline';
 
-import {SettingsModel} from '../models/settingsModel';
+import { SettingsModel } from '../models/settingsModel';
 
 @Injectable()
 export class FirebaseProvider {
-  
+
   private uid_key: string = 'uid_key';
 
   private uid: string = '';
@@ -18,19 +18,21 @@ export class FirebaseProvider {
 
   async init() {
     this.uid = await this.storage.get(this.uid_key);
-    this.user = this.db.object('/users/' + this.uid);
-    return this.user;
+    if (this.uid != null) {
+      this.user = this.db.object('/users/' + this.uid);
+      return this.user;
+    }
   }
 
-  getUserId(){
+  getUserId() {
     return this.uid;
   }
-  
-  setUserId(user:any){
+
+  setUserId(user: any) {
     this.storage.set(this.uid_key, user.uid);
   }
 
-  logout(){
+  logout() {
     this.storage.remove(this.uid_key);
     this.db.reset();
   }
@@ -39,7 +41,7 @@ export class FirebaseProvider {
     return this.settings;
   }
 
-  setSettings( data ) {
+  setSettings(data) {
     this.settings = data;
   }
 
@@ -49,18 +51,18 @@ export class FirebaseProvider {
     //romise.offline.then(() => console.log('offline data saved to device storage!'));
     promise.then(() => console.log('data saved to Firebase!'));
   }
-  
-  addDashboardItem(model:any){
+
+  addDashboardItem(model: any) {
     const promise = this.db.list('/users/' + this.uid + '/dashboard').push(model);
     return promise;
   }
 
-  editDashboardItem(id: number , model:any){
+  editDashboardItem(id: number, model: any) {
     const promise = this.db.object('/users/' + this.uid + '/dashboard/' + id).set(model);
     return promise;
   }
 
-  deleteDashboardItem(id: number){
+  deleteDashboardItem(id: number) {
     const promise = this.db.object('/users/' + this.uid + '/dashboard/' + id).remove();
     return promise;
   }

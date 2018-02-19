@@ -24,19 +24,20 @@ export class MyApp {
   }
 
   initializeApp() {
-    this.fb.init().then((user) => {
-      user.subscribe(data => {
-        this.fb.setSettings(data);
-        this.pages = data.menu;
-        
 
-        this.platform.ready().then(() => {
-          // Okay, so the platform is ready and our plugins are available.
-          // Here you can do any higher level native things you might need.
-          this.statusBar.styleDefault();
-          this.splashScreen.hide();
-          this.initializeRootPage();
+    this.fb.init().then((user) => {
+      if (user !== undefined) {
+        user.subscribe(data => {
+          this.fb.setSettings(data);
+          this.pages = data.menu;
         });
+      }
+      this.platform.ready().then(() => {
+        // Okay, so the platform is ready and our plugins are available.
+        // Here you can do any higher level native things you might need.
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
+        this.initializeRootPage();
       });
     });
   }
