@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {NavParams, ToastController} from 'ionic-angular';
 
 import {AlgoliaService} from '../../providers/algolia';
-
-//import { SettingsModel } from '../../models/settingsModel';
 import { FirebaseProvider } from '../../providers/firebaseProvider';
 
 @Component({
@@ -19,15 +17,33 @@ export class EditItemPage implements OnInit{
   constructor(private navParams: NavParams
     , private toastCtrl: ToastController
     , private searchServices: AlgoliaService
-    , private settingsProvider: FirebaseProvider
+    , private settings: FirebaseProvider
   ) {
 
       
     }
 
   async ngOnInit() {
-    //this.user = await this.settingsProvider.getSettings();
     this.item = JSON.parse(this.navParams.get('item'));
+  }
+
+  /* Toast functions */
+  toastError(err) {
+    let toast = this.toastCtrl.create({
+      message: 'Error: ' + err,
+      duration: 2000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+  toastSavedDashboard() {
+    let toast = this.toastCtrl.create({
+      message: 'Saved!',
+      duration: 2000,
+      position: 'top'
+    });
+    toast.present();
   }
 
   save(){
@@ -45,62 +61,19 @@ export class EditItemPage implements OnInit{
     //this.settingsProvider.saveSettings(this.user);
 
     this.searchServices.save_item(this.item)
-        .then(x => {
-          let toast = this.toastCtrl.create({
-            message: 'Saved!',
-            duration: 2000,
-            position: 'top'
-          });
-          toast.present();
-        })
-        .catch(err => {
-          let toast = this.toastCtrl.create({
-            message: 'Error: ' + err,
-            duration: 2000,
-            position: 'top'
-          });
-          toast.present();
-        });
+      .then(x => this.toastSavedDashboard())
+      .catch(err => this.toastError(err));
   }
 
   star(){
-    this.item.favorite = 1;
-    this.searchServices.save_item(this.item)
-        .then(x => {
-          let toast = this.toastCtrl.create({
-            message: 'Saved!',
-            duration: 2000,
-            position: 'top'
-          });
-          toast.present();
-        })
-        .catch(err => {
-          let toast = this.toastCtrl.create({
-            message: 'Error: ' + err,
-            duration: 2000,
-            position: 'top'
-          });
-          toast.present();
-        });
+    this.settings.addDashboardItem(this.item)
+        .then(x => this.toastSavedDashboard())
+        .catch(err => this.toastError(err));
   }
 
   delete(){
     this.searchServices.delete_item(this.item)
-        .then(x => {
-          let toast = this.toastCtrl.create({
-            message: 'Saved!',
-            duration: 2000,
-            position: 'top'
-          });
-          toast.present();
-        })
-        .catch(err => {
-          let toast = this.toastCtrl.create({
-            message: 'Error: ' + err,
-            duration: 2000,
-            position: 'top'
-          });
-          toast.present();
-        });
+      .then(x => this.toastSavedDashboard())
+      .catch(err => this.toastError(err));
   }
 }
