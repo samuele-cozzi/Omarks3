@@ -52,6 +52,11 @@ export class FirebaseProvider {
     promise.then(() => console.log('data saved to Firebase!'));
   }
 
+  async getDashboardItem(id: number) {
+    const model = await this.db.object('/users/' + this.uid + '/dashboard/' + id);
+    return model;
+  }
+
   addDashboardItem(model: any) {
     const promise = this.db.list('/users/' + this.uid + '/dashboard').push(model);
     return promise;

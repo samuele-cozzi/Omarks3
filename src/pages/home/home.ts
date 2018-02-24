@@ -206,36 +206,29 @@ export class HomePage {
     this.user = this.settings.user;
   }
 
-  dashboard_up(item) {
+  async dashboard_up(item) {
     try {
-      console.log(item.dashboard_ranking);
-      if (item.dashboard_ranking > 0){
-        let rnkA = item.dashboard_ranking - 1;
-        let rnkB = item.dashboard_ranking;
-        this.user.value.dashboard[rnkA].dashboard_ranking = rnkB;
-        this.user.value.dashboard[rnkB].dashboard_ranking = rnkA;
-        var tmp = this.user.value.dashboard[rnkA];
-        this.user.value.dashboard[rnkA] = this.user.value.dashboard[rnkB];
-        this.user.value.dashboard[rnkB] = tmp;
-        this.settings.saveSettings(this.user);
-      }
+      let id = item._key;
+      let prev_id = item._prev;
+      let prev_item = await this.settings.getDashboardItem(item._prev);
+      item._key = prev_id;
+      prev_item.value._key = id;
+      this.settings.editDashboardItem(id, prev_item.value);
+      this.settings.editDashboardItem(prev_id, item);
     } catch (err) {
       this.toastError(err);
     }
   }
 
-  dashboard_down(item) {
+  async dashboard_down(item) {
     try {
-      if (item.dashboard_ranking < this.user.value.dashboard.length){
-        let rnkA = item.dashboard_ranking;
-        let rnkB = item.dashboard_ranking + 1;
-        this.user.value.dashboard[rnkA].dashboard_ranking = rnkB;
-        this.user.value.dashboard[rnkB].dashboard_ranking = rnkA;
-        var tmp = this.user.value.dashboard[rnkA];
-        this.user.value.dashboard[rnkA] = this.user.value.dashboard[rnkB];
-        this.user.value.dashboard[rnkB] = tmp;
-        this.settings.saveSettings(this.user);
-      }
+      let id = item._key;
+      let next_id = item._next;
+      let next_item = await this.settings.getDashboardItem(item._next);
+      item._key = next_id;
+      next_item.value._key = id;
+      this.settings.editDashboardItem(id, next_item.value);
+      this.settings.editDashboardItem(next_id, item);
     } catch (err) {
       this.toastError(err);
     }

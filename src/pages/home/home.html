@@ -21,7 +21,7 @@
 <ion-content padding>
   <div class="content" *ngIf="!showSearch">
     <ul>
-      <li *ngFor="let item of (user | async)?.dashboard | dashboardPipe">
+      <li *ngFor="let item of (user | async)?.dashboard | dashboardPipe; let i = index">
         <ion-card *ngIf="item">
           <div (click)="open(item?.value, $event)">
             <ion-item>
@@ -39,9 +39,8 @@
               <h2>{{item?.value?.given_title}}</h2>
               <p>{{item?.value?.given_url?.split("/")[2]}}</p>
             </ion-item>
-
             <section *ngIf="item?.value?.image_src && item?.value?.image_src.length > 0">
-              <img src="{{item?.value?.image_src}}" />
+              <img  src="{{item?.value?.image_src}}" />
             </section>
             <ion-card-content *ngIf="!item?.value?.image_src || (item?.value?.image_src && item?.value?.image_src.length == 0)">
               {{item?.value?.excerpt}}
