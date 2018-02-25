@@ -46,10 +46,9 @@ export class FirebaseProvider {
   }
 
   saveSettings(model: any) {
-    const promise = this.user.set(model.value);
-    //const promise = this.db.object('/users/' + this.uid).update(model.value);
-    //romise.offline.then(() => console.log('offline data saved to device storage!'));
-    promise.then(() => console.log('data saved to Firebase!'));
+    //const promise = this.user.set(model.value);
+    const promise = this.db.object('/users/' + this.uid).update(model);
+    return promise;
   }
 
   async getDashboardItem(id: number) {

@@ -28,16 +28,32 @@ export class SettingPage {
     this.settings.dashboard_string = JSON.stringify(this.settings.dashboard);
   }
 
-  save(event) {
-    this.settings.menu = JSON.parse(this.settings.menu_string);
-    this.settings.dashboard = JSON.parse(this.settings.dashboard_string);
-    this.settingsProvider.saveSettings(this.settings)
+  /* Toast functions */
+  toastError(err) {
+    let toast = this.toastCtrl.create({
+      message: 'Error: ' + err,
+      duration: 2000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+  toastSavedDashboard() {
     let toast = this.toastCtrl.create({
       message: 'Saved!',
       duration: 2000,
       position: 'top'
     });
     toast.present();
+  }
+
+  save() {
+    this.settings.menu = JSON.parse(this.settings.menu_string);
+    this.settings.dashboard = JSON.parse(this.settings.dashboard_string);
+    console.log(this.settings);
+    this.settingsProvider.saveSettings(this.settings)
+      .then(x => this.toastSavedDashboard())
+      .catch(err => this.toastError(err));
   }
 
   refresh(event) {
