@@ -18,7 +18,7 @@ export class AlgoliaService {
     constructor(private http: Http
         , private settingsProvider: FirebaseProvider
     ) {
-        this.init();
+
     }
 
     private init() {
@@ -45,6 +45,7 @@ export class AlgoliaService {
     }
 
     public get_facets(): Promise<any> {
+        this.init();
 
         return this.http.get(this.service_url + '?facets=*', { headers: this.headers })
             .toPromise()
@@ -68,6 +69,7 @@ export class AlgoliaService {
     }
 
     public get_filtered_facets(key: string, value: string, hitsPerPage: number = 20, page: number = 0): Promise<any> {
+        this.init();
 
         let body = {
             "facetFilters": key + ':' + value,
@@ -83,6 +85,7 @@ export class AlgoliaService {
     }
 
     public get_query(query: string, hitsPerPage: number = 20, page: number = 0): Promise<any> {
+        this.init();
 
         let body = {
             "query": query,

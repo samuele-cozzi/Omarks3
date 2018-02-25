@@ -8,7 +8,7 @@ export class DashboardPipe {
   transform(value, args: string[]): any {
     let keys = [];
     for (let key in value) {
-      //value[key]._key = key;
+      value[key]._key = key;
       keys.push({ key: key, value: value[key] });
     }
     for (let i = 0; i < keys.length; i++){

@@ -57,20 +57,7 @@ export class HomePage {
   }
 
   async ionViewDidLoad() {
-    // this.user = await this.settings.getSettings();
-    // if (typeof this.user.dashboard == 'undefined') {
-    //   this.user.dashboard = [];
-    // }
-
-    // this.key = this.navParams.get('key');
-    // this.value = this.navParams.get('value');
-
-    // if (this.key !== undefined && this.value !== undefined) {
-    //   this.getSearchFacets(this.key, this.value);
-    //   this.showSearch = true;
-    // } else {
-    //   this.initDashboard();
-    // }
+    
   }
 
   ionViewWillEnter() {
