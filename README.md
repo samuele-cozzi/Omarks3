@@ -56,7 +56,7 @@ $ firebase deploy
 $ firebase deploy --only functions,hosting,database
 ```
 
-##References
+## References
 
 ## License
 - [MIT License](/LICENSE)

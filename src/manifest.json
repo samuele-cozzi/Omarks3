@@ -5,9 +5,9 @@
   "display": "standalone",
   "icons": [{
     "src": "assets/imgs/logo.png",
-    "sizes": "512x512",
+    "sizes": "200x200",
     "type": "image/png"
   }],
-  "background_color": "#e85100",
-  "theme_color": "#e85100"
+  "background_color": "#488aff",
+  "theme_color": "#488aff"
 }
