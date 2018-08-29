@@ -26,14 +26,12 @@
           <div (click)="open(item?.value, $event)">
             <ion-item>
               <ion-avatar item-left>
-                <span [ngSwitch]="item?.value?.given_url?.split('/')[3]">
-                  <img *ngSwitchCase="'drive'" src="/build/images/drive.png" />
-                  <img *ngSwitchCase="'document'" src="/build/images/doc.png" />
-                  <img *ngSwitchCase="'spreadsheets'" src="/build/images/sheets.png" />
-                  <img *ngSwitchCase="'presentation'" src="/build/images/slides.png" />
-                  <img *ngSwitchCase="'drawings'" src="/build/images/draw.png" />
-                  <img *ngSwitchDefault src="https://besticon-demo.herokuapp.com/icon?size=80..120..200&url={{item?.value?.given_url?.split('/')[2]}}&size=120"
-                  />
+                <span *ngIf="item?.value?.avatar">
+                  <img src="{{item?.value?.avatar}}" />
+                </span>
+                <span *ngIf="!item?.value?.avatar">
+                  <!--<img *ngSwitchDefault src="https://besticon-demo.herokuapp.com/icon?size=80..120..200&url={{item?.value?.given_url?.split('/')[2]}}&size=120" />-->
+                  <img src="https://api.faviconkit.com/{{item?.value?.given_url?.split('/')[2]}}/144" />
                 </span>
               </ion-avatar>
               <h2>{{item?.value?.given_title}}</h2>

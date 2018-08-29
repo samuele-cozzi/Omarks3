@@ -41,6 +41,16 @@ $ npm install
 $ cd ..
 ```
 
+|Path|Description|
+| ------ | ------ |
+| /src | Ionic APP source code |
+| /www | Ionic Builded source code |
+| /resources | Images of the Ionic app (IOS & Android) |
+| /functions | Firebase function source code |
+| ionic.config.json | Configuration file of Ionic |
+| firebase.json | Configuration file of Firebase |
+
+
 ### Execute
 
 ```shell
