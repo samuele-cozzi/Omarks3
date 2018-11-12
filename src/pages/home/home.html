@@ -78,7 +78,7 @@
       <ion-item (click)="open(item, $event)">
         <ion-thumbnail item-left>
           <span *ngIf="item.has_image == 0">
-            <span [ngSwitch]="item.given_url.split('/')[3]">
+            <span [ngSwitch]="item?.given_url?.split('/')[3]">
               <img *ngSwitchCase="'drive'" src="/build/images/drive.png" />
               <img *ngSwitchCase="'document'" src="/build/images/doc.png" />
               <img *ngSwitchCase="'spreadsheets'" src="/build/images/sheets.png" />
