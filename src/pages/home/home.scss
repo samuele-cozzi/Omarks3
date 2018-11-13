@@ -38,13 +38,32 @@ ion-card section {
 
 @media screen and (max-width: 500px) {
   .content ul li {
-    width: calc(100%);
+    width: calc(33%);
   }
   .card section {
-    height: 0px;
+    display: none;
+  }
+  .card .item {
+    padding: 0px;
+  }
+  .card img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .card > div .item-inner{
+    display: none;
+  }
+  .card > ion-item {
+    display: none;
   }
   .card-content{
     height: 0px;
+    padding: 0px;
+  }
+  ion-avatar{
+    width: 100%;
+    margin:5px !important;
   }
 }
 
