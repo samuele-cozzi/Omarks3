@@ -1,18 +1,19 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'split'})
+@Pipe({ name: 'split' })
 export class SplitPipe implements PipeTransform {
-  transform(value, args:string[]) : any {
-    if(typeof value === 'object'){
-      let keys = [];
-      for (let key in value) {
-        keys.push(key);
+  transform(value, args: string[]): any {
+    if (value !== undefined) {
+      if (typeof value === 'object') {
+        let keys = [];
+        for (let key in value) {
+          keys.push(key);
+        }
+        return keys;
       }
-      return keys;
-    }
-    else
-    {
-      return value.split(',');
+      else {
+        return value.split(',');
+      }
     }
   }
 }

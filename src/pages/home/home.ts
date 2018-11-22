@@ -85,8 +85,8 @@ export class HomePage {
 
   /* Header events */
   onInputSearch(event) {
-    console.log(event);
     (event.inputType === "insertText") && (event.target.value !== "") && this.getSearch(event.target.value, 0);
+    (event.type === "input") && (event.target.value !== "") && this.getSearch(event.target.value, 0);
     (event.inputType === "deleteContentBackward") && (event.target.value === "") && (this.searchItems = []);
   }
 
@@ -168,6 +168,7 @@ export class HomePage {
   }
 
   async doInfinite(infiniteScroll) {
+    console.log("do_infinite");
     if (this.searchItems.length > 0) {
       this.page++;
       var newItemsLength = 0;

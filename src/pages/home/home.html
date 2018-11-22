@@ -77,23 +77,23 @@
     <ion-item-sliding *ngFor="let item of searchItems">
       <ion-item (click)="open(item, $event)">
         <ion-thumbnail item-left>
-          <span *ngIf="item.has_image == 0">
+          <span *ngIf="item?.has_image == 0">
             <span [ngSwitch]="item?.given_url?.split('/')[3]">
               <img *ngSwitchCase="'drive'" src="/build/images/drive.png" />
               <img *ngSwitchCase="'document'" src="/build/images/doc.png" />
               <img *ngSwitchCase="'spreadsheets'" src="/build/images/sheets.png" />
               <img *ngSwitchCase="'presentation'" src="/build/images/slides.png" />
               <img *ngSwitchCase="'drawings'" src="/build/images/draw.png" />
-              <img *ngSwitchDefault src="https://icons.better-idea.org/icon?url={{item.given_url.split('/')[2]}}&size=120" />
+              <img *ngSwitchDefault src="https://icons.better-idea.org/icon?url={{item?.given_url?.split('/')[2]}}&size=120" />
             </span>
           </span>
-          <img *ngIf="item.has_image == 1" src="{{item.image.src}}" />
+          <img *ngIf="item?.has_image == 1" src="{{item?.image?.src}}" />
         </ion-thumbnail>
         <h2>{{item.given_title}}</h2>
         <p>{{item.given_url}}</p>
         <p>{{item.excerpt}}</p>
         <h3>
-          <button ion-button outline *ngFor="let tag of item.tags | split">{{tag}}</button>
+          <button ion-button outline *ngFor="let tag of item?.tags | split">{{tag}}</button>
         </h3>
       </ion-item>
       <ion-item-options>
