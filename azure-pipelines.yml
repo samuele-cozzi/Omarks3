@@ -24,7 +24,17 @@ steps:
 - script: |
     npm install
   displayName: 'npm install'
+  
+- script: |
+    cd functions
+    npm install
+    cd ..
+  displayName: 'npm install functions'
 
 - script: |
     ionic build --prod
   displayName: 'ionic build'
+ 
+- script: |
+    firebase deploy
+  displayName: 'firebase deploy'
